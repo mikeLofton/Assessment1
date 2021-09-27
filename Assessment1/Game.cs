@@ -56,7 +56,7 @@ namespace Assessment1
         /// </summary>
         private void Start()
         {
-
+            InitializeEquipment();
         }
 
         /// <summary>
@@ -253,6 +253,29 @@ namespace Assessment1
         private void DisplayStats(Entity character)
         {
 
+        }
+
+        /// <summary>
+        /// Initializes the players starting equipment
+        /// </summary>
+        private void InitializeEquipment()
+        {
+            //Warrior Items
+            Item sword = new Item { Name = "The Sword of Fate", StatBoost = 10, Type = ItemType.ATTACK };
+            Item armor = new Item { Name = "Sinner's Chestplate", StatBoost = 5, Type = ItemType.DEFENSE };
+
+            //Guardian Items
+            Item shield = new Item { Name = "The Shield of Destiny", StatBoost = 10, Type = ItemType.DEFENSE };
+            Item knuckles = new Item { Name = "Knuckle Duster", StatBoost = 3, Type = ItemType.ATTACK };
+
+            //Archer Items
+            Item bow = new Item { Name = "The Bow of Despair", StatBoost = 5, Type = ItemType.ATTACK };
+            Item necklace = new Item { Name = "Phantom Necklace", StatBoost = 10, Type = ItemType.HEALTH };
+
+            //Initialize Arrays
+            _warriorItems = new Item[] { sword, armor };
+            _gaurdianItems = new Item[] { shield, knuckles };
+            _archerItems = new Item[] { bow, necklace };
         }
     }
 }
