@@ -9,12 +9,24 @@ namespace Assessment1
     {
         STARTMENU
     }
+
+    public enum ItemType
+    {
+        DEFENSE,
+        ATTACK,
+        HEALTH,
+        NONE
+    }
+
+
     class Game
     {
         private bool _gameOver;
         private Scene _currentScene = 0;
         private Player _player;
         private Entity[] _enemies;
+        private int _currentEnemyIndex = 0;
+        private Entity _currentEnemy;
 
         /// <summary>
         /// Function that starts the main game loop
