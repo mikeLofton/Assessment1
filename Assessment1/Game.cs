@@ -5,10 +5,16 @@ using System.IO;
 
 namespace Assessment1
 {
+    public enum Scene
+    {
+        STARTMENU
+    }
     class Game
     {
         private bool _gameOver;
-        private int _currentScene = 0;
+        private Scene _currentScene = 0;
+        private Player _player;
+        private Entity[] _enemies;
 
         /// <summary>
         /// Function that starts the main game loop
@@ -38,7 +44,8 @@ namespace Assessment1
         /// </summary>
         private void Update()
         {
-
+            DisplayCurrentScene();
+            Console.Clear();
         }
 
         /// <summary>
@@ -46,7 +53,8 @@ namespace Assessment1
         /// </summary>
         private void End()
         {
-
+            Console.WriteLine("You have reached the end of your path. Farewell.");
+            Console.ReadKey(true);
         }
 
         private void Save()
@@ -111,7 +119,16 @@ namespace Assessment1
         /// </summary>
         private void DisplayCurrentScene()
         {
+            switch (_currentScene)
+            {
+                case Scene.STARTMENU:
+                    DisplayStartMenu();
+                    break;
 
+                default:
+                    Console.WriteLine("Invalid scene index");
+                    break;
+            }
         }
 
         /// <summary>
@@ -123,7 +140,7 @@ namespace Assessment1
 
             if (input == 0)
             {
-                _currentScene = 1;
+               
             }
             else if (input == 1)
             {
@@ -147,7 +164,16 @@ namespace Assessment1
         /// </summary>
         private void DisplayMainMenu()
         {
+            int input = GetInput("Would you like to play again?", "Yes", "No");
 
+            if (input == 0)
+            {
+
+            }
+            else if (input == 1)
+            {
+                _gameOver = true;
+            }
         }
     }
 }
