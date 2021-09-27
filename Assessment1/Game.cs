@@ -7,23 +7,43 @@ namespace Assessment1
 {
     class Game
     {
-        private bool gameOver;
+        private bool _gameOver;
+        private int _currentScene = 0;
 
+        /// <summary>
+        /// Function that starts the main game loop
+        /// </summary>
         public void Run()
         {
+            Start();
 
+            while (!_gameOver)
+            {
+                Update();
+            }
+
+            End();
         }
 
+        /// <summary>
+        /// Function used to initialize any starting values.
+        /// </summary>
         private void Start()
         {
 
         }
 
+        /// <summary>
+        /// Funtion that is called every time the game loops.
+        /// </summary>
         private void Update()
         {
 
         }
 
+        /// <summary>
+        /// Function that is called before the game closes.
+        /// </summary>
         private void End()
         {
 
@@ -36,7 +56,7 @@ namespace Assessment1
 
         private bool Load()
         {
-
+            return true;
         }
 
         /// <summary>
@@ -84,6 +104,50 @@ namespace Assessment1
             }
 
             return inputRecieved;
+        }
+
+        /// <summary>
+        /// Calls the appropriate functions based on the current scene index.
+        /// </summary>
+        private void DisplayCurrentScene()
+        {
+
+        }
+
+        /// <summary>
+        /// Displays the menu that allows the player to start new game or load previous one.
+        /// </summary>
+        private void DisplayStartMenu()
+        {
+            int input = GetInput("Welcome to Ascension", "Start New Game", "Load Game");
+
+            if (input == 0)
+            {
+                _currentScene = 1;
+            }
+            else if (input == 1)
+            {
+                if (Load())
+                {
+                    Console.WriteLine("Load Successful!");
+                    Console.ReadKey(true);
+                    Console.Clear();
+                }
+                else
+                {
+                    Console.WriteLine("Load Failed.");
+                    Console.ReadKey(true);
+                    Console.Clear();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Displays the menu that allows the player to restart or quit the game.
+        /// </summary>
+        private void DisplayMainMenu()
+        {
+
         }
     }
 }
