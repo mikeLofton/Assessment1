@@ -9,7 +9,8 @@ namespace Assessment1
     {
         STARTMENU,
         NAMECREATION,
-        CHARACTERSELECTION
+        CHARACTERSELECTION,
+        TEST
     }
 
     public enum ItemType
@@ -153,6 +154,10 @@ namespace Assessment1
                     CharacterSelection();
                     break;
 
+                case Scene.TEST:
+                    DisplayStats(_player);
+                    break;
+
                 default:
                     Console.WriteLine("Invalid scene index");
                     break;
@@ -252,7 +257,11 @@ namespace Assessment1
 
         private void DisplayStats(Entity character)
         {
-
+            Console.WriteLine($"Name: {character.Name}");
+            Console.WriteLine($"Health: {character.Health}");
+            Console.WriteLine($"Attack Power: {character.AttackPower}");
+            Console.WriteLine($"Defense Power: {character.DefensePower}");
+            Console.WriteLine($"Gold: {character.Gold}");
         }
 
         /// <summary>

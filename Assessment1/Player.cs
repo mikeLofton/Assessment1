@@ -62,7 +62,7 @@ namespace Assessment1
             {
                 _job = value;
             }
-        }
+        }   
 
         public Player(Item[] items) : base()
         {
@@ -76,6 +76,7 @@ namespace Assessment1
             _equipment = items;
             _currentEquipment.Name = "Nothing";
             _job = job;
+            return;
         }
 
         public bool TryEquip(int index)
