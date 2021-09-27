@@ -22,10 +22,16 @@ namespace Assessment1
 
     class Game
     {
+        //Basic Variables
         private bool _gameOver;
         private Scene _currentScene = 0;
+        //Player related Variables
         private Player _player;
         private string _playerName;
+        private Item[] _warriorItems;
+        private Item[] _gaurdianItems;
+        private Item[] _archerItems;
+        //Enemy related Variables
         private Entity[] _enemies;
         private int _currentEnemyIndex = 0;
         private Entity _currentEnemy;
@@ -186,7 +192,7 @@ namespace Assessment1
 
             if (input == 0)
             {
-
+                _currentScene = Scene.STARTMENU;
             }
             else if (input == 1)
             {
@@ -215,6 +221,13 @@ namespace Assessment1
             {
                 _currentScene = Scene.NAMECREATION;
             }
+        }
+
+        private void CharacterSelection()
+        {
+            int input = GetInput("Choose thine role.", "Warrior", "Guardian", "Archer");
+
+
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Assessment1
             get { return _name; }
         }
 
-        public float Health
+        public virtual float Health
         {
             get { return _health; }
         }

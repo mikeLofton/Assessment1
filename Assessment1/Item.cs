@@ -7,8 +7,8 @@ namespace Assessment1
 {
     class Item
     {
-        private string _name;
-        private float _statBoost;
-        private ItemType _type;
+        public string Name;
+        public float StatBoost;
+        public ItemType Type;
     }
 }
