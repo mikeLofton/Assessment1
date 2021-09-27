@@ -76,7 +76,6 @@ namespace Assessment1
             _equipment = items;
             _currentEquipment.Name = "Nothing";
             _job = job;
-            return;
         }
 
         public bool TryEquip(int index)
