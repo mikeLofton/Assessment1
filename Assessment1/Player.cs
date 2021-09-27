@@ -5,7 +5,12 @@ using System.IO;
 
 namespace Assessment1
 {
-    class Player
+    class Player : Entity
     {
+        private Item[] _equipment;
+        private Item _currentEquipment;
+        private int _currentEquipmentIndex;
+        private ShopItem[] _consumableItems;
+        private string _job;
     }
 }
