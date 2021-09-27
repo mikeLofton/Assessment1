@@ -77,5 +77,34 @@ namespace Assessment1
             _currentEquipment.Name = "Nothing";
             _job = job;
         }
+
+        public bool TryEquip(int index)
+        {
+            if (index >= _equipment.Length || index < 0)
+            {
+                return false;
+            }
+
+            _currentEquipmentIndex = index;
+
+            _currentEquipment = _equipment[_currentEquipmentIndex];
+
+            return true;
+        }
+
+        public bool TryRemoveCurrentEquip()
+        {
+            if (CurrentEquip.Name == "Nothing")
+            {
+                return false;
+            }
+
+            _currentEquipmentIndex = -1;
+
+            _currentEquipment = new Item();
+            _currentEquipment.Name = "Nothing";
+
+            return true;
+        }
     }
 }

@@ -149,6 +149,10 @@ namespace Assessment1
                     GetPlayerName();
                     break;
 
+                case Scene.CHARACTERSELECTION:
+                    CharacterSelection();
+                    break;
+
                 default:
                     Console.WriteLine("Invalid scene index");
                     break;
@@ -223,10 +227,31 @@ namespace Assessment1
             }
         }
 
+        /// <summary>
+        /// Allows player to select their class and updates stats accordingly. 
+        /// </summary>
         private void CharacterSelection()
         {
             int input = GetInput("Choose thine role.", "Warrior", "Guardian", "Archer");
 
+            if (input == 0)
+            {
+                _player = new Player(_playerName, 100, 15, 5, 100, _warriorItems, "Warrior");
+            }
+            else if (input == 1)
+            {
+                _player = new Player(_playerName, 150, 10, 15, 100, _gaurdianItems, "Guardian");
+            }
+            else if (input == 2)
+            {
+                _player = new Player(_playerName, 70, 20, 10, 100, _archerItems, "Archer");
+            }
+
+            _currentScene++;
+        }
+
+        private void DisplayStats(Entity character)
+        {
 
         }
     }

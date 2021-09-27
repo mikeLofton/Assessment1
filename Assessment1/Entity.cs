@@ -55,5 +55,24 @@ namespace Assessment1
             _defensePower = defensePower;
             _gold = gold;
         }
+
+        public float TakeDamage(float damageAmount)
+        {
+            float damageTaken = damageAmount - DefensePower;
+
+            if (damageTaken < 0)
+            {
+                damageTaken = 0;
+            }
+
+            _health -= damageTaken;
+
+            return damageTaken;
+        }
+
+        public float Attack(Entity defender)
+        {
+            return defender.TakeDamage(AttackPower);
+        }
     }
 }
