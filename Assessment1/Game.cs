@@ -7,7 +7,9 @@ namespace Assessment1
 {
     public enum Scene
     {
-        STARTMENU
+        STARTMENU,
+        NAMECREATION,
+        CHARACTERSELECTION
     }
 
     public enum ItemType
@@ -18,12 +20,12 @@ namespace Assessment1
         NONE
     }
 
-
     class Game
     {
         private bool _gameOver;
         private Scene _currentScene = 0;
         private Player _player;
+        private string _playerName;
         private Entity[] _enemies;
         private int _currentEnemyIndex = 0;
         private Entity _currentEnemy;
@@ -137,6 +139,10 @@ namespace Assessment1
                     DisplayStartMenu();
                     break;
 
+                case Scene.NAMECREATION:
+                    GetPlayerName();
+                    break;
+
                 default:
                     Console.WriteLine("Invalid scene index");
                     break;
@@ -152,7 +158,7 @@ namespace Assessment1
 
             if (input == 0)
             {
-               
+                _currentScene = Scene.NAMECREATION;
             }
             else if (input == 1)
             {
@@ -185,6 +191,29 @@ namespace Assessment1
             else if (input == 1)
             {
                 _gameOver = true;
+            }
+        }
+
+        /// <summary>
+        /// Displays text asking for the players name. Doesn't transition to the next section until
+        /// the player decides to keep the name.
+        /// </summary>
+        private void GetPlayerName()
+        {
+            Console.WriteLine("What is thine name?");
+            Console.Write("> ");
+            _playerName = Console.ReadLine();
+
+            int input = GetInput($"You've entered {_playerName} are you sure you want to keep this name?",
+                "Yes", "No");
+
+            if (input == 0)
+            {
+                _currentScene = Scene.CHARACTERSELECTION;
+            }
+            else if (input == 1)
+            {
+                _currentScene = Scene.NAMECREATION;
             }
         }
     }

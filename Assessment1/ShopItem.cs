@@ -7,6 +7,6 @@ namespace Assessment1
 {
     class ShopItem : Item
     {
-        private int _cost
+        private int _cost;
     }
 }
