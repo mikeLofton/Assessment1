@@ -9,8 +9,9 @@ namespace Assessment1
     {
         STARTMENU,
         NAMECREATION,
-        CHARACTERSELECTION
-        
+        CHARACTERSELECTION,
+        FIRSTEVENT,
+        RESTARTMENU
     }
 
     public enum ItemType
@@ -172,7 +173,15 @@ namespace Assessment1
 
                 case Scene.CHARACTERSELECTION:
                     CharacterSelection();
-                    break;               
+                    break;
+
+                case Scene.FIRSTEVENT:
+                    FirstEvent();
+                    break;
+
+                case Scene.RESTARTMENU:
+                    DisplayRestartMenu();
+                    break;
 
                 default:
                     Console.WriteLine("Invalid scene index");
@@ -211,7 +220,7 @@ namespace Assessment1
         /// <summary>
         /// Displays the menu that allows the player to restart or quit the game.
         /// </summary>
-        private void DisplayMainMenu()
+        private void DisplayRestartMenu()
         {
             int input = GetInput("Would you like to play again?", "Yes", "No");
 
@@ -343,6 +352,46 @@ namespace Assessment1
                 Console.WriteLine("The item isn't there.");
 
             Console.WriteLine($"You equipped {_player.CurrentEquip.Name} !");
+        }
+
+        private void CheckBattleResults()
+        {
+            if (_player.Health <= 0)
+            {
+                Console.WriteLine("You have fallen...");
+                Console.ReadKey(true);
+                Console.Clear();
+                _currentScene = Scene.RESTARTMENU;
+            }
+            else if (_currentEnemy.Health <= 0)
+            {
+                Console.ReadKey(true);
+                Console.Clear();
+                Console.WriteLine($"{_currentEnemy.Name} has fallen.");
+
+                _currentEnemyIndex++;
+            }
+        }
+
+        private void FirstEvent()
+        {
+            Console.WriteLine("You stand at the entrance of the mighty Celestia Tower. The large " +
+                "black structure stands so high that even the birds can't hope to see the top. You" +
+                " feel an unnatural energy surrounding the tower. \n");
+
+            int input = GetInput("Will you enter?", "Yes", "No");
+
+            if (input == 0)
+            {
+                Console.WriteLine("You feel cold. God has abandoned this place.");
+                Console.ReadKey(true);
+            }
+            else if (input == 1)
+            {
+                Console.WriteLine("You have abandoned your journey. Run home cowardly traveler.");
+                Console.ReadKey(true);
+                _currentScene = Scene.RESTARTMENU;
+            }
         }
     }
 }
