@@ -10,9 +10,10 @@ namespace Assessment1
         private Item[] _equipment;
         private Item _currentEquipment;
         private int _currentEquipmentIndex;
-        private ShopItem[] _consumableItems;
+        private ShopItem[] _consumablesInventory;
         private int _keys;
         private string _job;
+        private int _gold;
 
         public override float DefensePower
         {
@@ -70,6 +71,11 @@ namespace Assessment1
             get { return _keys; }
         }
 
+        public int Gold
+        {
+            get { return _gold; }
+        }
+
         public Player(Item[] items) : base()
         {
             _currentEquipment.Name = "Nothing";
@@ -77,11 +83,12 @@ namespace Assessment1
             _currentEquipmentIndex = -1;           
         }
 
-        public Player(string name, float health, float attackPower, float defensePower, int gold, Item[] items, string job, int keys) : base(name, health, attackPower, defensePower, gold)
+        public Player(string name, float health, float attackPower, float defensePower, int gold, Item[] items, string job, int keys) : base(name, health, attackPower, defensePower)
         {
             _equipment = items;
             _currentEquipment.Name = "Nothing";
             _job = job;
+            _gold = gold;
             _keys = keys;
         }
 
@@ -112,6 +119,20 @@ namespace Assessment1
             _currentEquipment.Name = "Nothing";
 
             return true;
+        }
+
+        public void Buy(ShopItem item)
+        {
+            _gold -= item.Cost;
+
+            ShopItem[] playerConsumables = new ShopItem[_consumablesInventory.Length + 1];
+
+            for (int i = 0; i < _consumablesInventory.Length; i++)
+                playerConsumables[i] = _consumablesInventory[i];
+
+            playerConsumables[_consumablesInventory.Length] = item;
+
+            _consumablesInventory = playerConsumables;
         }
 
         public string[] GetItemNames()
