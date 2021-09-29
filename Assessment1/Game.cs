@@ -21,6 +21,14 @@ namespace Assessment1
         NONE
     }
 
+    public struct Item
+    {
+        public string Name;
+        public float StatBoost;
+        public ItemType Type;
+        public int Cost;
+    }
+
     class Game
     {
         //Basic Variables
@@ -40,10 +48,10 @@ namespace Assessment1
         private Entity wolves;
         private Entity magma;
         //Shop related Variables
-        private ShopItem[] _shopInventory;
-        private ShopItem _healthPotion;
-        private ShopItem _attackPotion;
-        private ShopItem _defensePotion;
+        private Item[] _shopInventory;
+        private Item _healthPotion;
+        private Item _attackPotion;
+        private Item _defensePotion;
 
         /// <summary>
         /// Function that starts the main game loop
@@ -274,16 +282,16 @@ namespace Assessment1
         private void InitializeEquipment()
         {
             //Warrior Items
-            Item sword = new Item { Name = "The Sword of Fate", StatBoost = 10, Type = ItemType.ATTACK };
-            Item armor = new Item { Name = "Sinner's Chestplate", StatBoost = 5, Type = ItemType.DEFENSE };
+            Item sword = new Item { Name = "The Sword of Fate", StatBoost = 10, Type = ItemType.ATTACK, Cost = 1 };
+            Item armor = new Item { Name = "Sinner's Chestplate", StatBoost = 5, Type = ItemType.DEFENSE, Cost = 1};
 
             //Guardian Items
-            Item shield = new Item { Name = "The Shield of Destiny", StatBoost = 10, Type = ItemType.DEFENSE };
-            Item knuckles = new Item { Name = "Knuckle Duster", StatBoost = 3, Type = ItemType.ATTACK };
+            Item shield = new Item { Name = "The Shield of Destiny", StatBoost = 10, Type = ItemType.DEFENSE, Cost = 1 };
+            Item knuckles = new Item { Name = "Knuckle Duster", StatBoost = 3, Type = ItemType.ATTACK, Cost = 1 };
 
             //Archer Items
-            Item bow = new Item { Name = "The Bow of Despair", StatBoost = 5, Type = ItemType.ATTACK };
-            Item necklace = new Item { Name = "Phantom Necklace", StatBoost = 10, Type = ItemType.HEALTH };
+            Item bow = new Item { Name = "The Bow of Despair", StatBoost = 5, Type = ItemType.ATTACK, Cost = 1 };
+            Item necklace = new Item { Name = "Phantom Necklace", StatBoost = 10, Type = ItemType.HEALTH, Cost = 1 };
 
             //Initialize Arrays
             _warriorItems = new Item[] { sword, armor };
@@ -293,11 +301,11 @@ namespace Assessment1
 
         private void InitializeShopItems()
         {
-            _healthPotion = new ShopItem { Name = "Health Potion", StatBoost = 15, Type = ItemType.HEALTH, Cost = 100 };
-            _attackPotion = new ShopItem { Name = "Attack Potion", StatBoost = 15, Type = ItemType.ATTACK, Cost = 150 };
-            _defensePotion = new ShopItem { Name = "Defense Potion", StatBoost = 15, Type = ItemType.DEFENSE, Cost = 200 };
+            _healthPotion = new Item { Name = "Health Potion", StatBoost = 15, Type = ItemType.HEALTH, Cost = 100 };
+            _attackPotion = new Item { Name = "Attack Potion", StatBoost = 15, Type = ItemType.ATTACK, Cost = 150 };
+            _defensePotion = new Item { Name = "Defense Potion", StatBoost = 15, Type = ItemType.DEFENSE, Cost = 200 };
 
-            _shopInventory = new ShopItem[] { _healthPotion, _attackPotion, _defensePotion };
+            _shopInventory = new Item[] { _healthPotion, _attackPotion, _defensePotion };
         }
 
         /// <summary>

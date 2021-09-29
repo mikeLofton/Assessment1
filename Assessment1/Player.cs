@@ -10,7 +10,7 @@ namespace Assessment1
         private Item[] _equipment;
         private Item _currentEquipment;
         private int _currentEquipmentIndex;
-        private ShopItem[] _consumablesInventory;
+        private Item[] _consumablesInventory;
         private int _keys;
         private string _job;
         private int _gold;
@@ -121,11 +121,11 @@ namespace Assessment1
             return true;
         }
 
-        public void Buy(ShopItem item)
+        public void Buy(Item item)
         {
             _gold -= item.Cost;
 
-            ShopItem[] playerConsumables = new ShopItem[_consumablesInventory.Length + 1];
+            Item[] playerConsumables = new Item[_consumablesInventory.Length + 1];
 
             for (int i = 0; i < _consumablesInventory.Length; i++)
                 playerConsumables[i] = _consumablesInventory[i];
