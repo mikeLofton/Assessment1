@@ -11,6 +11,7 @@ namespace Assessment1
         private Item _currentEquipment;
         private int _currentEquipmentIndex;
         private ShopItem[] _consumableItems;
+        private int _keys;
         private string _job;
 
         public override float DefensePower
@@ -64,6 +65,11 @@ namespace Assessment1
             }
         }   
 
+        public int Keys
+        {
+            get { return _keys; }
+        }
+
         public Player(Item[] items) : base()
         {
             _currentEquipment.Name = "Nothing";
@@ -71,11 +77,12 @@ namespace Assessment1
             _currentEquipmentIndex = -1;           
         }
 
-        public Player(string name, float health, float attackPower, float defensePower, int gold, Item[] items, string job) : base(name, health, attackPower, defensePower, gold)
+        public Player(string name, float health, float attackPower, float defensePower, int gold, Item[] items, string job, int keys) : base(name, health, attackPower, defensePower, gold)
         {
             _equipment = items;
             _currentEquipment.Name = "Nothing";
-            //_job = job;
+            _job = job;
+            _keys = keys;
         }
 
         public bool TryEquip(int index)

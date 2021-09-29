@@ -60,6 +60,7 @@ namespace Assessment1
         /// </summary>
         private void Start()
         {
+            InitializeEnemies();
             InitializeEquipment();
         }
 
@@ -240,15 +241,15 @@ namespace Assessment1
 
             if (input == 0)
             {
-                _player = new Player(_playerName, 100, 15, 5, 100, _warriorItems, "Warrior");
+                _player = new Player(_playerName, 100, 15, 5, 100, _warriorItems, "Warrior", 3);
             }
             else if (input == 1)
             {
-                _player = new Player(_playerName, 150, 10, 15, 100, _gaurdianItems, "Guardian");
+                _player = new Player(_playerName, 150, 10, 15, 100, _gaurdianItems, "Guardian", 3);
             }
             else if (input == 2)
             {
-                _player = new Player(_playerName, 70, 20, 10, 100, _archerItems, "Archer");
+                _player = new Player(_playerName, 70, 20, 10, 100, _archerItems, "Archer", 3);
             }
 
             _currentScene++;
@@ -286,6 +287,9 @@ namespace Assessment1
             _archerItems = new Item[] { bow, necklace };
         }
 
+        /// <summary>
+        /// Initializes the enemy stats and enemies array.
+        /// </summary>
         private void InitializeEnemies()
         {
             _currentEnemyIndex = 0;
@@ -295,6 +299,8 @@ namespace Assessment1
             wolves = new Entity("The Nest of Wolves", 55, 25, 15, 30);
 
             magma = new Entity("The Dripping Dinosaurus", 100, 50, 20, 100);
+
+            _enemies = new Entity[] { sinner, wolves, magma };
 
             _currentEnemy = _enemies[_currentEnemyIndex];
         }
