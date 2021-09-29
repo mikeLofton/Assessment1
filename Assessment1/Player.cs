@@ -146,5 +146,15 @@ namespace Assessment1
 
             return itemNames;
         }
+
+        public override void Save(StreamWriter writer)
+        {
+
+        }
+
+        public override bool Load(StreamReader reader)
+        {
+            return true;
+        }
     }
 }

@@ -67,5 +67,15 @@ namespace Assessment1
         {
             return defender.TakeDamage(AttackPower);
         }
+
+        public virtual void Save(StreamWriter writer)
+        {
+
+        }
+
+        public virtual bool Load(StreamReader reader)
+        {
+            return true;
+        }
     }
 }
