@@ -8,9 +8,9 @@ namespace Assessment1
     class Shop
     {
         private int _gold;
-        private ShopItem[] _inventory;
+        private Item[] _inventory;
 
-        public Shop (ShopItem[] items)
+        public Shop (Item[] items)
         {
             _inventory = items;
         }
