@@ -39,6 +39,11 @@ namespace Assessment1
         private Entity sinner;
         private Entity wolves;
         private Entity magma;
+        //Shop related Variables
+        private ShopItem[] _shopInventory;
+        private ShopItem _healthPotion;
+        private ShopItem _attackPotion;
+        private ShopItem _defensePotion;
 
         /// <summary>
         /// Function that starts the main game loop
@@ -260,8 +265,7 @@ namespace Assessment1
             Console.WriteLine($"Name: {character.Name}");
             Console.WriteLine($"Health: {character.Health}");
             Console.WriteLine($"Attack Power: {character.AttackPower}");
-            Console.WriteLine($"Defense Power: {character.DefensePower}");
-            Console.WriteLine($"Gold: {character.Gold}");
+            Console.WriteLine($"Defense Power: {character.DefensePower}");          
         }
 
         /// <summary>
@@ -287,6 +291,15 @@ namespace Assessment1
             _archerItems = new Item[] { bow, necklace };
         }
 
+        private void InitializeShopItems()
+        {
+            _healthPotion = new ShopItem { Name = "Health Potion", StatBoost = 15, Type = ItemType.HEALTH, Cost = 100 };
+            _attackPotion = new ShopItem { Name = "Attack Potion", StatBoost = 15, Type = ItemType.ATTACK, Cost = 150 };
+            _defensePotion = new ShopItem { Name = "Defense Potion", StatBoost = 15, Type = ItemType.DEFENSE, Cost = 200 };
+
+            _shopInventory = new ShopItem[] { _healthPotion, _attackPotion, _defensePotion };
+        }
+
         /// <summary>
         /// Initializes the enemy stats and enemies array.
         /// </summary>
@@ -294,11 +307,11 @@ namespace Assessment1
         {
             _currentEnemyIndex = 0;
 
-            sinner = new Entity("The Nameless Sinner", 30, 17, 5, 10);
+            sinner = new Entity("The Nameless Sinner", 30, 17, 5);
 
-            wolves = new Entity("The Nest of Wolves", 55, 25, 15, 30);
+            wolves = new Entity("The Nest of Wolves", 55, 25, 15);
 
-            magma = new Entity("The Dripping Dinosaurus", 100, 50, 20, 100);
+            magma = new Entity("The Dripping Dinosaurus", 100, 50, 20);
 
             _enemies = new Entity[] { sinner, wolves, magma };
 

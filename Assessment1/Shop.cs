@@ -20,9 +20,22 @@ namespace Assessment1
             if (player.Gold >= _inventory[itemIndex].Cost)
             {
                 _gold += _inventory[itemIndex].Cost;
-                player.Buy()
+                player.Buy(_inventory[itemIndex]);
+                return true;
             }
             return false;
+        }
+
+        public string[] GetItemNames()
+        {
+            string[] itemNames = new string[_inventory.Length];
+
+            for (int i = 0; i < _inventory.Length; i++)
+            {
+                itemNames[i] = $"{_inventory[i].Name} - {_inventory[i].Cost}g";
+            }
+
+            return itemNames;
         }
     }
 }
