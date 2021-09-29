@@ -37,5 +37,15 @@ namespace Assessment1
 
             return itemNames;
         }
+
+        public void Save(StreamWriter writer)
+        {
+
+        }
+
+        public bool Load(StreamReader reader)
+        {
+            return true;
+        }
     }
 }

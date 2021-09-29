@@ -48,6 +48,7 @@ namespace Assessment1
         private Entity wolves;
         private Entity magma;
         //Shop related Variables
+        private Shop _shop;
         private Item[] _shopInventory;
         private Item _healthPotion;
         private Item _attackPotion;
@@ -75,6 +76,8 @@ namespace Assessment1
         {
             InitializeEnemies();
             InitializeEquipment();
+            InitializeShopItems();
+            _shop = new Shop(_shopInventory);
         }
 
         /// <summary>
@@ -299,6 +302,9 @@ namespace Assessment1
             _archerItems = new Item[] { bow, necklace };
         }
 
+        /// <summary>
+        /// Initializes the items that can be bought from the shop.
+        /// </summary>
         private void InitializeShopItems()
         {
             _healthPotion = new Item { Name = "Health Potion", StatBoost = 15, Type = ItemType.HEALTH, Cost = 100 };
