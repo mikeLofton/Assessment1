@@ -12,6 +12,7 @@ namespace Assessment1
         CHARACTERSELECTION,
         FIRSTEVENT,
         SECONDEVENT,
+        THIRDEVENT,
         RESTARTMENU
     }
 
@@ -184,6 +185,13 @@ namespace Assessment1
                     SecondEvent();
                     break;
 
+                case Scene.THIRDEVENT:
+                    //ThirdEvent();
+                    Battle();
+                    CheckBattleResults();
+                    Console.ReadKey(true);
+                    break;
+
                 case Scene.RESTARTMENU:
                     DisplayRestartMenu();
                     break;
@@ -285,6 +293,10 @@ namespace Assessment1
             _currentScene++;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="character"></param>
         private void DisplayStats(Entity character)
         {
             Console.WriteLine($"Name: {character.Name}");
@@ -359,9 +371,13 @@ namespace Assessment1
             Console.WriteLine($"You equipped {_player.CurrentEquip.Name} !");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void Battle()
         {
             DisplayStats(_player);
+            Console.WriteLine("--------------------------");
             DisplayStats(_currentEnemy);
 
             int input = GetInput($"{_currentEnemy.Name} stands before you. Choose your action.",
@@ -373,7 +389,7 @@ namespace Assessment1
                 Console.WriteLine($"You dealt {damageDealt} damage!");
 
                 damageDealt = _currentEnemy.Attack(_player);
-                Console.WriteLine($"The {_currentEnemy.Name} dealt {damageDealt}");
+                Console.WriteLine($"{_currentEnemy.Name} dealt {damageDealt}");
             }
             else if (input == 1)
             {
@@ -398,6 +414,33 @@ namespace Assessment1
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private void CheckBattleResults()
+        {
+            if (_player.Health <= 0)
+            {
+                Console.WriteLine("You have fallen...");
+                Console.ReadKey(true);
+                Console.Clear();
+                _currentScene = Scene.RESTARTMENU;
+            }
+            else if (_currentEnemy.Health <= 0)
+            {
+                Console.ReadKey(true);
+                Console.Clear();
+                Console.WriteLine($"{_currentEnemy.Name} has fallen.");
+
+                _currentEnemyIndex++;
+
+                _currentEnemy = _enemies[_currentEnemyIndex];
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void FirstEvent()
         {
             Console.WriteLine("You stand at the entrance of the mighty Celestia Tower. The large " +
@@ -420,13 +463,16 @@ namespace Assessment1
             }   
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void SecondEvent()
         {
             Console.WriteLine("Floor 1 \n");
 
             Console.WriteLine("Upon entering the door slams shut behind you. Three hallways stand before you" +
                   " Above the entryway of each hall is a sign marked with an animal. A dog, A bird, and A chimp. " +
-                  "\n A voice enters your mind. Which beast is above all?");
+                  "\nA voice enters your mind. Which beast is above all? \n");
 
             for (int i = 0; i < 5; i++)
             {
@@ -456,6 +502,14 @@ namespace Assessment1
                     Console.ReadKey(true);
                 }
             }
+        }
+
+        private void ThirdEvent()
+        {
+            Console.WriteLine("At the end of the hall you encounter an emaciated man, clad in only " +
+                "a loincloth, weilding a broken blade. He attacks! Prepare for battle!");
+            Console.ReadKey(true);
+            Console.Clear();                
         }
     }
 }

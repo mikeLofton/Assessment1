@@ -74,6 +74,8 @@ namespace Assessment1
         public int Gold
         {
             get { return _gold; }
+
+            set { _gold = value; }
         }
 
         public Player(Item[] items) : base()
