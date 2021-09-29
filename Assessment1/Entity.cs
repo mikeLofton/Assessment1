@@ -21,6 +21,8 @@ namespace Assessment1
         public virtual float Health
         {
             get { return _health; }
+
+            set { _health = value; }
         }
 
         public virtual float AttackPower

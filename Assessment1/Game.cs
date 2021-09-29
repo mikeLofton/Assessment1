@@ -11,6 +11,7 @@ namespace Assessment1
         NAMECREATION,
         CHARACTERSELECTION,
         FIRSTEVENT,
+        SECONDEVENT,
         RESTARTMENU
     }
 
@@ -176,7 +177,11 @@ namespace Assessment1
                     break;
 
                 case Scene.FIRSTEVENT:
-                    FirstEvent();
+                    FirstEvent();               
+                    break;
+
+                case Scene.SECONDEVENT:
+                    SecondEvent();
                     break;
 
                 case Scene.RESTARTMENU:
@@ -354,22 +359,42 @@ namespace Assessment1
             Console.WriteLine($"You equipped {_player.CurrentEquip.Name} !");
         }
 
-        private void CheckBattleResults()
+        private void Battle()
         {
-            if (_player.Health <= 0)
-            {
-                Console.WriteLine("You have fallen...");
-                Console.ReadKey(true);
-                Console.Clear();
-                _currentScene = Scene.RESTARTMENU;
-            }
-            else if (_currentEnemy.Health <= 0)
-            {
-                Console.ReadKey(true);
-                Console.Clear();
-                Console.WriteLine($"{_currentEnemy.Name} has fallen.");
+            DisplayStats(_player);
+            DisplayStats(_currentEnemy);
 
-                _currentEnemyIndex++;
+            int input = GetInput($"{_currentEnemy.Name} stands before you. Choose your action.",
+                "Attack", "Equip Item", "Use Potion", "Shop", "Save", "Quit");
+
+            if (input == 0)
+            {
+                float damageDealt = _player.Attack(_currentEnemy);
+                Console.WriteLine($"You dealt {damageDealt} damage!");
+
+                damageDealt = _currentEnemy.Attack(_player);
+                Console.WriteLine($"The {_currentEnemy.Name} dealt {damageDealt}");
+            }
+            else if (input == 1)
+            {
+                DisplayEquipMenu();
+            }
+            else if (input == 2)
+            {
+
+            }
+            else if (input == 3)
+            {
+
+            }
+            else if (input == 4)
+            {
+                Save();
+                Console.WriteLine("Save Successful");
+            }
+            else if (input == 5)
+            {
+                _gameOver = true;
             }
         }
 
@@ -384,6 +409,7 @@ namespace Assessment1
             if (input == 0)
             {
                 Console.WriteLine("You feel cold. God has abandoned this place.");
+                _currentScene++;
                 Console.ReadKey(true);
             }
             else if (input == 1)
@@ -391,6 +417,44 @@ namespace Assessment1
                 Console.WriteLine("You have abandoned your journey. Run home cowardly traveler.");
                 Console.ReadKey(true);
                 _currentScene = Scene.RESTARTMENU;
+            }   
+        }
+
+        private void SecondEvent()
+        {
+            Console.WriteLine("Floor 1 \n");
+
+            Console.WriteLine("Upon entering the door slams shut behind you. Three hallways stand before you" +
+                  " Above the entryway of each hall is a sign marked with an animal. A dog, A bird, and A chimp. " +
+                  "\n A voice enters your mind. Which beast is above all?");
+
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine($"Your health: {_player.Health} \n");
+
+                int input = GetInput("Which path will you choose", "The Dog", "The Bird", "The Chimp");
+
+                if (input == 0)
+                {
+                    Console.WriteLine("Spikes stick up from the ground piercing your body. " +
+                        "You take 30 damage");
+                    _player.Health -= 30;
+                    Console.ReadKey(true);
+                }
+                else if (input == 1)
+                {
+                    Console.WriteLine("You have chosen correctly.");
+                    Console.ReadKey(true);
+                    _currentScene++;
+                    break;
+                }
+                else if (input == 2)
+                {
+                    Console.WriteLine("Rocks fall from the ceiling crushing your body. " +
+                       "You take 30 damage");
+                    _player.Health -= 30;
+                    Console.ReadKey(true);
+                }
             }
         }
     }
