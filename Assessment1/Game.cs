@@ -9,8 +9,8 @@ namespace Assessment1
     {
         STARTMENU,
         NAMECREATION,
-        CHARACTERSELECTION,
-        TEST
+        CHARACTERSELECTION
+        
     }
 
     public enum ItemType
@@ -36,6 +36,9 @@ namespace Assessment1
         private Entity[] _enemies;
         private int _currentEnemyIndex = 0;
         private Entity _currentEnemy;
+        private Entity sinner;
+        private Entity wolves;
+        private Entity magma;
 
         /// <summary>
         /// Function that starts the main game loop
@@ -152,11 +155,7 @@ namespace Assessment1
 
                 case Scene.CHARACTERSELECTION:
                     CharacterSelection();
-                    break;
-
-                case Scene.TEST:
-                    DisplayStats(_player);
-                    break;
+                    break;               
 
                 default:
                     Console.WriteLine("Invalid scene index");
@@ -265,7 +264,7 @@ namespace Assessment1
         }
 
         /// <summary>
-        /// Initializes the players starting equipment
+        /// Initializes the players starting equipment.
         /// </summary>
         private void InitializeEquipment()
         {
@@ -285,6 +284,32 @@ namespace Assessment1
             _warriorItems = new Item[] { sword, armor };
             _gaurdianItems = new Item[] { shield, knuckles };
             _archerItems = new Item[] { bow, necklace };
+        }
+
+        private void InitializeEnemies()
+        {
+            _currentEnemyIndex = 0;
+
+            sinner = new Entity("The Nameless Sinner", 30, 17, 5, 10);
+
+            wolves = new Entity("The Nest of Wolves", 55, 25, 15, 30);
+
+            magma = new Entity("The Dripping Dinosaurus", 100, 50, 20, 100);
+
+            _currentEnemy = _enemies[_currentEnemyIndex];
+        }
+
+        /// <summary>
+        /// Gives you the ability to equip your starting equipment.
+        /// </summary>
+        private void DisplayEquipMenu()
+        {
+            int input = GetInput("What do you want to equip?", _player.GetItemNames());
+
+            if (!_player.TryEquip(input))
+                Console.WriteLine("The item isn't there.");
+
+            Console.WriteLine($"You equipped {_player.CurrentEquip.Name} !");
         }
     }
 }
