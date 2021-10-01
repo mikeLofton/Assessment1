@@ -82,7 +82,7 @@ namespace Assessment1
         {
             _currentEquipment.Name = "Nothing";
             _equipment = items;
-            _currentEquipmentIndex = -1;           
+            _currentEquipmentIndex = -1;         
         }
 
         public Player(string name, float health, float attackPower, float defensePower, int gold, Item[] items, string job, int keys) : base(name, health, attackPower, defensePower)
@@ -92,6 +92,7 @@ namespace Assessment1
             _job = job;
             _gold = gold;
             _keys = keys;
+            _consumablesInventory = new Item[0];
         }
 
         public bool TryEquip(int index)
@@ -104,21 +105,6 @@ namespace Assessment1
             _currentEquipmentIndex = index;
 
             _currentEquipment = _equipment[_currentEquipmentIndex];
-
-            return true;
-        }
-
-        public bool TryRemoveCurrentEquip()
-        {
-            if (CurrentEquip.Name == "Nothing")
-            {
-                return false;
-            }
-
-            _currentEquipmentIndex = -1;
-
-            _currentEquipment = new Item();
-            _currentEquipment.Name = "Nothing";
 
             return true;
         }
@@ -144,6 +130,18 @@ namespace Assessment1
             for (int i = 0; i < _equipment.Length; i++)
             {
                 itemNames[i] = _equipment[i].Name;
+            }
+
+            return itemNames;
+        }
+
+        public string[] GetConsummableNames()
+        {
+            string[] itemNames = new string[_consumablesInventory.Length];
+
+            for (int i = 0; i < _consumablesInventory.Length; i++)
+            {
+                itemNames[i] = _consumablesInventory[i].Name;
             }
 
             return itemNames;

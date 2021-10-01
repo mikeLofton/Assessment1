@@ -371,12 +371,19 @@ namespace Assessment1
             Console.WriteLine($"You equipped {_player.CurrentEquip.Name} !");
         }
 
+        private void DisplayPotionMenu()
+        {
+            int input = GetInput("Pick your potion.", _player.GetConsummableNames());
+
+        }
+
         /// <summary>
         /// 
         /// </summary>
         private void Battle()
         {
             DisplayStats(_player);
+            Console.WriteLine($"Shop Keys: {_player.Keys}");
             Console.WriteLine("--------------------------");
             DisplayStats(_currentEnemy);
 
@@ -401,7 +408,7 @@ namespace Assessment1
             }
             else if (input == 3)
             {
-
+                DisplayShopMenu();
             }
             else if (input == 4)
             {
@@ -510,6 +517,57 @@ namespace Assessment1
                 "a loincloth, weilding a broken blade. He attacks! Prepare for battle!");
             Console.ReadKey(true);
             Console.Clear();                
+        }
+
+        private string[] GetShopMenuOptions()
+        {
+            string[] itemsForSale = _shop.GetItemNames();
+            string[] menuOptions = new string[itemsForSale.Length + 1];
+
+            for (int i = 0; i < itemsForSale.Length; i++)
+            {
+                menuOptions[i] = itemsForSale[i];
+            }
+
+            menuOptions[itemsForSale.Length] = "Return to Battle";            
+
+            return menuOptions;
+        }
+
+        private void DisplayShopMenu()
+        {
+            string[] playerItemNames = _player.GetConsummableNames();
+
+            Console.WriteLine("Your gold: " + _player.Gold);
+            Console.WriteLine("Your Inventory: " + "\n");
+
+            foreach (string itemName in playerItemNames)
+            {
+                Console.WriteLine(itemName);
+            }
+            Console.WriteLine();
+
+            int input = GetInput("Please help yourself to my wares", GetShopMenuOptions());
+
+            if (input >= 0 && input < GetShopMenuOptions().Length - 1)
+            {
+                if (_shop.Sell(_player, input))
+                {
+                    Console.Clear();
+                    Console.WriteLine($"You purchased the {_shop.GetItemNames()[input]}!");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("You don't have enough gold for that.");
+                    Console.ReadKey(true);
+                    Console.Clear();
+                }
+            }
+
+ 
         }
     }
 }
