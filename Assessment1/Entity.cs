@@ -72,11 +72,25 @@ namespace Assessment1
 
         public virtual void Save(StreamWriter writer)
         {
-
+            writer.WriteLine(_name);
+            writer.WriteLine(_health);
+            writer.WriteLine(_attackPower);
+            writer.WriteLine(_defensePower);
         }
 
         public virtual bool Load(StreamReader reader)
         {
+            _name = reader.ReadLine();
+
+            if (!float.TryParse(reader.ReadLine(), out _health))
+                return false;
+
+            if (!float.TryParse(reader.ReadLine(), out _attackPower))
+                return false;
+
+            if (!float.TryParse(reader.ReadLine(), out _defensePower))
+                return false;
+
             return true;
         }
     }

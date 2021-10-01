@@ -103,12 +103,66 @@ namespace Assessment1
 
         private void Save()
         {
+            //Create new stream writer
+            StreamWriter writer = new StreamWriter("SaveData.txt");
 
+            //Save enemy index
+            writer.WriteLine(_currentEnemyIndex);
+
+            //Save player and enemy stats
+            _player.Save(writer);
+            _currentEnemy.Save(writer);
+
+            writer.Close();
         }
 
         private bool Load()
         {
-            return true;
+            bool loadSuccessful = true;
+
+            //If the file doesn't exist...
+            if (!File.Exists("SaveData.txt"))
+                //...returns false
+                loadSuccessful = false;
+
+            //Create a new reader to read from the text file
+            StreamReader reader = new StreamReader("SaveData.txt");
+
+            //If the first line can't be converted into an integer...
+            if (!int.TryParse(reader.ReadLine(), out _currentEnemyIndex))
+                //...returns false
+                loadSuccessful = false;
+
+            string job = reader.ReadLine();
+
+            if (job == "Warrior")
+                _player = new Player(_warriorItems);
+            else if (job == "Guardian")
+                _player = new Player(_gaurdianItems);
+            else if (job == "Archer")
+                _player = new Player(_archerItems);
+            else
+                loadSuccessful = false;
+
+            _player.Job = job;
+
+            //Creates a new instance and try load the player          
+            if (!_player.Load(reader))
+                loadSuccessful = false;
+
+            //Create a new instance and try to load the enemy
+            _currentEnemy = new Entity();
+            if (!_currentEnemy.Load(reader))
+                loadSuccessful = false;
+
+            //Update the array to match the current enemy stats
+            _enemies[_currentEnemyIndex] = _currentEnemy;
+
+            //Close the reader once loading is finished
+            reader.Close();
+
+            return loadSuccessful;
+
         }
 
         /// <summary>
@@ -239,6 +293,7 @@ namespace Assessment1
 
             if (input == 0)
             {
+                InitializeEnemies();
                 _currentScene = Scene.STARTMENU;
             }
             else if (input == 1)
@@ -333,9 +388,9 @@ namespace Assessment1
         /// </summary>
         private void InitializeShopItems()
         {
-            _healthPotion = new Item { Name = "Health Potion", StatBoost = 15, Type = ItemType.HEALTH, Cost = 100 };
-            _attackPotion = new Item { Name = "Attack Potion", StatBoost = 15, Type = ItemType.ATTACK, Cost = 150 };
-            _defensePotion = new Item { Name = "Defense Potion", StatBoost = 15, Type = ItemType.DEFENSE, Cost = 200 };
+            _healthPotion = new Item { Name = "Health Potion", StatBoost = 30, Type = ItemType.HEALTH, Cost = 100 };
+            _attackPotion = new Item { Name = "Attack Potion", StatBoost = 30, Type = ItemType.ATTACK, Cost = 150 };
+            _defensePotion = new Item { Name = "Defense Potion", StatBoost = 30, Type = ItemType.DEFENSE, Cost = 200 };
 
             _shopInventory = new Item[] { _healthPotion, _attackPotion, _defensePotion };
         }
@@ -347,11 +402,11 @@ namespace Assessment1
         {
             _currentEnemyIndex = 0;
 
-            sinner = new Entity("The Nameless Sinner", 30, 17, 5);
+            sinner = new Entity("The Nameless Sinner", 20, 10, 3);
 
-            wolves = new Entity("The Nest of Wolves", 55, 25, 15);
+            wolves = new Entity("The Nest of Wolves", 30, 15, 5);
 
-            magma = new Entity("The Dripping Dinosaurus", 100, 50, 20);
+            magma = new Entity("The Dripping Dinosaurus", 45, 20, 10);
 
             _enemies = new Entity[] { sinner, wolves, magma };
 
@@ -371,12 +426,6 @@ namespace Assessment1
             Console.WriteLine($"You equipped {_player.CurrentEquip.Name} !");
         }
 
-        private void DisplayPotionMenu()
-        {
-            int input = GetInput("Pick your potion.", _player.GetConsummableNames());
-
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -388,7 +437,7 @@ namespace Assessment1
             DisplayStats(_currentEnemy);
 
             int input = GetInput($"{_currentEnemy.Name} stands before you. Choose your action.",
-                "Attack", "Equip Item", "Use Potion", "Shop", "Save", "Quit");
+                "Attack", "Equip Item", "Shop", "Save", "Quit");
 
             if (input == 0)
             {
@@ -404,25 +453,29 @@ namespace Assessment1
             }
             else if (input == 2)
             {
-
+                if (_player.Keys > 0)
+                {                           
+                   DisplayShopMenu();
+                  _player.Keys -= 1;        
+                }
+                else
+                {
+                    Console.WriteLine("You cannot enter the shop");
+                }
             }
             else if (input == 3)
-            {
-                DisplayShopMenu();
-            }
-            else if (input == 4)
             {
                 Save();
                 Console.WriteLine("Save Successful");
             }
-            else if (input == 5)
+            else if (input == 4)
             {
                 _gameOver = true;
             }
         }
 
         /// <summary>
-        /// 
+        /// Checks if the player or enemy has died. And gives player gold accordingly.
         /// </summary>
         private void CheckBattleResults()
         {
@@ -437,12 +490,37 @@ namespace Assessment1
             {
                 Console.ReadKey(true);
                 Console.Clear();
-                Console.WriteLine($"{_currentEnemy.Name} has fallen.");
+                Console.WriteLine($"{_currentEnemy.Name} has fallen.");            
+                _player.Gold += 100;
+                Console.WriteLine($"You gain 100 gold. Total Gold: {_player.Gold}");
 
                 _currentEnemyIndex++;
 
+                if (TryEndGame())
+                {
+                    return;
+                }
+
                 _currentEnemy = _enemies[_currentEnemyIndex];
             }
+        }
+
+        /// <summary>
+        /// Ends the battle of all enemies in array have died.
+        /// </summary>
+        /// <returns></returns>
+        bool TryEndGame()
+        {
+            bool endGame = _currentEnemyIndex >= _enemies.Length;
+
+            if (endGame)
+            {
+                Console.Clear();
+                Console.WriteLine("You have conquered the three beasts");              
+                _currentScene = Scene.RESTARTMENU;
+            }
+
+            return endGame;
         }
 
         /// <summary>
@@ -511,14 +589,6 @@ namespace Assessment1
             }
         }
 
-        private void ThirdEvent()
-        {
-            Console.WriteLine("At the end of the hall you encounter an emaciated man, clad in only " +
-                "a loincloth, weilding a broken blade. He attacks! Prepare for battle!");
-            Console.ReadKey(true);
-            Console.Clear();                
-        }
-
         private string[] GetShopMenuOptions()
         {
             string[] itemsForSale = _shop.GetItemNames();
@@ -536,7 +606,7 @@ namespace Assessment1
 
         private void DisplayShopMenu()
         {
-            string[] playerItemNames = _player.GetConsummableNames();
+            string[] playerItemNames = _player.GetItemNames();
 
             Console.WriteLine("Your gold: " + _player.Gold);
             Console.WriteLine("Your Inventory: " + "\n");
@@ -566,8 +636,6 @@ namespace Assessment1
                     Console.Clear();
                 }
             }
-
- 
         }
     }
 }

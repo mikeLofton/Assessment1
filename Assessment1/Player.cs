@@ -9,8 +9,7 @@ namespace Assessment1
     {
         private Item[] _equipment;
         private Item _currentEquipment;
-        private int _currentEquipmentIndex;
-        private Item[] _consumablesInventory;
+        private int _currentEquipmentIndex;       
         private int _keys;
         private string _job;
         private int _gold;
@@ -69,6 +68,8 @@ namespace Assessment1
         public int Keys
         {
             get { return _keys; }
+
+            set { _keys = value; }
         }
 
         public int Gold
@@ -92,7 +93,7 @@ namespace Assessment1
             _job = job;
             _gold = gold;
             _keys = keys;
-            _consumablesInventory = new Item[0];
+            
         }
 
         public bool TryEquip(int index)
@@ -113,14 +114,14 @@ namespace Assessment1
         {
             _gold -= item.Cost;
 
-            Item[] playerConsumables = new Item[_consumablesInventory.Length + 1];
+            Item[] playerConsumables = new Item[_equipment.Length + 1];
 
-            for (int i = 0; i < _consumablesInventory.Length; i++)
-                playerConsumables[i] = _consumablesInventory[i];
+            for (int i = 0; i < _equipment.Length; i++)
+                playerConsumables[i] = _equipment[i];
 
-            playerConsumables[_consumablesInventory.Length] = item;
+            playerConsumables[_equipment.Length] = item;
 
-            _consumablesInventory = playerConsumables;
+            _equipment = playerConsumables;
         }
 
         public string[] GetItemNames()
@@ -135,26 +136,38 @@ namespace Assessment1
             return itemNames;
         }
 
-        public string[] GetConsummableNames()
-        {
-            string[] itemNames = new string[_consumablesInventory.Length];
-
-            for (int i = 0; i < _consumablesInventory.Length; i++)
-            {
-                itemNames[i] = _consumablesInventory[i].Name;
-            }
-
-            return itemNames;
-        }
-
         public override void Save(StreamWriter writer)
         {
-
+            writer.WriteLine(_job);
+            writer.WriteLine(_gold);
+            writer.WriteLine(_keys);
+            base.Save(writer);
+            writer.WriteLine(_equipment.Length);
+            writer.WriteLine(_currentEquipmentIndex);
         }
 
         public override bool Load(StreamReader reader)
         {
-            return true;
+            //If the base loading function fails...
+            if (!base.Load(reader))
+                //...return false
+                return false;
+
+            //If the current line can't be converted into an int...
+            if (!int.TryParse(reader.ReadLine(), out _currentEquipmentIndex))
+                //...return false
+                return false;
+
+            if (!int.TryParse(reader.ReadLine(), out _gold))
+                return false;
+
+            if (!int.TryParse(reader.ReadLine(), out _keys))
+                return false;
+
+            //Return whether or not the item was equipped successfully
+            return TryEquip(_currentEquipmentIndex);
+
+            
         }
     }
 }
