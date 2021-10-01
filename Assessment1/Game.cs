@@ -349,7 +349,7 @@ namespace Assessment1
         }
 
         /// <summary>
-        /// 
+        /// Displays player and enemy stats
         /// </summary>
         /// <param name="character"></param>
         private void DisplayStats(Entity character)
@@ -427,7 +427,7 @@ namespace Assessment1
         }
 
         /// <summary>
-        /// 
+        /// Has the player and enemy fight
         /// </summary>
         private void Battle()
         {
@@ -506,7 +506,7 @@ namespace Assessment1
         }
 
         /// <summary>
-        /// Ends the battle of all enemies in array have died.
+        /// Ends the battle if all enemies in array have died.
         /// </summary>
         /// <returns></returns>
         bool TryEndGame()
@@ -524,7 +524,7 @@ namespace Assessment1
         }
 
         /// <summary>
-        /// 
+        /// Fist event of the game
         /// </summary>
         private void FirstEvent()
         {
@@ -549,7 +549,7 @@ namespace Assessment1
         }
 
         /// <summary>
-        /// 
+        /// Second event of the game
         /// </summary>
         private void SecondEvent()
         {
@@ -589,6 +589,10 @@ namespace Assessment1
             }
         }
 
+        /// <summary>
+        /// Gets the shops options
+        /// </summary>
+        /// <returns></returns>
         private string[] GetShopMenuOptions()
         {
             string[] itemsForSale = _shop.GetItemNames();
@@ -604,6 +608,9 @@ namespace Assessment1
             return menuOptions;
         }
 
+        /// <summary>
+        /// Displays the shop
+        /// </summary>
         private void DisplayShopMenu()
         {
             string[] playerItemNames = _player.GetItemNames();

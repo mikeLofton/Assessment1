@@ -51,6 +51,11 @@ namespace Assessment1
             _defensePower = defensePower;          
         }
 
+        /// <summary>
+        /// Calculates the damage of an attack
+        /// </summary>
+        /// <param name="damageAmount"></param>
+        /// <returns></returns>
         public float TakeDamage(float damageAmount)
         {
             float damageTaken = damageAmount - DefensePower;
@@ -65,11 +70,19 @@ namespace Assessment1
             return damageTaken;
         }
 
+        /// <summary>
+        /// Has an attacker damage a defender
+        /// </summary>
+        /// <param name="defender"></param>
+        /// <returns></returns>
         public float Attack(Entity defender)
         {
             return defender.TakeDamage(AttackPower);
         }
 
+        /// <summary>
+        /// Saves entity name, health, attack, and defense
+        /// </summary>
         public virtual void Save(StreamWriter writer)
         {
             writer.WriteLine(_name);
@@ -78,6 +91,9 @@ namespace Assessment1
             writer.WriteLine(_defensePower);
         }
 
+        /// <summary>
+        /// Loads saved values
+        /// </summary>
         public virtual bool Load(StreamReader reader)
         {
             _name = reader.ReadLine();

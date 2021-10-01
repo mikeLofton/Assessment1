@@ -15,6 +15,12 @@ namespace Assessment1
             _inventory = items;
         }
 
+        /// <summary>
+        /// Sells items to player
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="itemIndex"></param>
+        /// <returns></returns>
         public bool Sell(Player player, int itemIndex)
         {
             if (player.Gold >= _inventory[itemIndex].Cost)
@@ -26,6 +32,10 @@ namespace Assessment1
             return false;
         }
 
+        /// <summary>
+        /// Gets names of items in shop
+        /// </summary>
+        /// <returns></returns>
         public string[] GetItemNames()
         {
             string[] itemNames = new string[_inventory.Length];

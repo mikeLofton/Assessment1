@@ -96,6 +96,11 @@ namespace Assessment1
             
         }
 
+        /// <summary>
+        /// Equip the item at the selected index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public bool TryEquip(int index)
         {
             if (index >= _equipment.Length || index < 0)
@@ -110,6 +115,10 @@ namespace Assessment1
             return true;
         }
 
+        /// <summary>
+        /// Allows player to buy item
+        /// </summary>
+        /// <param name="item"></param>
         public void Buy(Item item)
         {
             _gold -= item.Cost;
@@ -124,6 +133,10 @@ namespace Assessment1
             _equipment = playerConsumables;
         }
 
+        /// <summary>
+        /// Gets the names of player's starting items
+        /// </summary>
+        /// <returns></returns>
         public string[] GetItemNames()
         {
             string[] itemNames = new string[_equipment.Length];
@@ -136,6 +149,10 @@ namespace Assessment1
             return itemNames;
         }
 
+        /// <summary>
+        /// Saves player values
+        /// </summary>
+        /// <param name="writer"></param>
         public override void Save(StreamWriter writer)
         {
             writer.WriteLine(_job);
@@ -146,6 +163,11 @@ namespace Assessment1
             writer.WriteLine(_currentEquipmentIndex);
         }
 
+        /// <summary>
+        /// Loads player values
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         public override bool Load(StreamReader reader)
         {
             //If the base loading function fails...
