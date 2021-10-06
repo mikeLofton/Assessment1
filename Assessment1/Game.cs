@@ -106,6 +106,8 @@ namespace Assessment1
             //Create new stream writer
             StreamWriter writer = new StreamWriter("SaveData.txt");
 
+            writer.WriteLine(_currentScene);
+
             //Save enemy index
             writer.WriteLine(_currentEnemyIndex);
 
@@ -128,10 +130,15 @@ namespace Assessment1
             //Create a new reader to read from the text file
             StreamReader reader = new StreamReader("SaveData.txt");
 
+            if (!Scene.TryParse(reader.ReadLine(), out _currentScene))             
+                loadSuccessful = false;
+
             //If the first line can't be converted into an integer...
             if (!int.TryParse(reader.ReadLine(), out _currentEnemyIndex))
                 //...returns false
                 loadSuccessful = false;
+
+        
 
             string job = reader.ReadLine();
 

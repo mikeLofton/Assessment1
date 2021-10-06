@@ -156,10 +156,9 @@ namespace Assessment1
         public override void Save(StreamWriter writer)
         {
             writer.WriteLine(_job);
+            base.Save(writer);            
             writer.WriteLine(_gold);
-            writer.WriteLine(_keys);
-            base.Save(writer);
-            writer.WriteLine(_equipment.Length);
+            writer.WriteLine(_keys);                  
             writer.WriteLine(_currentEquipmentIndex);
         }
 
@@ -175,15 +174,17 @@ namespace Assessment1
                 //...return false
                 return false;
 
-            //If the current line can't be converted into an int...
-            if (!int.TryParse(reader.ReadLine(), out _currentEquipmentIndex))
-                //...return false
-                return false;
+           
 
             if (!int.TryParse(reader.ReadLine(), out _gold))
                 return false;
 
             if (!int.TryParse(reader.ReadLine(), out _keys))
+                return false;         
+
+            //If the current line can't be converted into an int...
+            if (!int.TryParse(reader.ReadLine(), out _currentEquipmentIndex))
+                //...return false
                 return false;
 
             //Return whether or not the item was equipped successfully
