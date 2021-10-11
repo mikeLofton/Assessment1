@@ -7,6 +7,7 @@ namespace Assessment1
 {
     class Player : Entity
     {
+        //Player Variables
         private Item[] _equipment;
         private Item _currentEquipment;
         private int _currentEquipmentIndex;       
@@ -14,6 +15,9 @@ namespace Assessment1
         private string _job;
         private int _gold;
 
+        /// <summary>
+        /// Gets player defense power. If current equipment is defense type will add the current equip statboost to defense power.
+        /// </summary>
         public override float DefensePower
         {
             get
@@ -25,6 +29,9 @@ namespace Assessment1
             }
         }
 
+        /// <summary>
+        /// Gets player attack power. If current equipment is attack type will add the current equip statboost to attack power.
+        /// </summary>
         public override float AttackPower
         {
             get
@@ -36,6 +43,9 @@ namespace Assessment1
             }
         }
 
+        /// <summary>
+        /// Gets player health. If current equipment is health type will add the current equip statboost to health.
+        /// </summary>
         public override float Health
         {
             get
@@ -47,11 +57,17 @@ namespace Assessment1
             }
         }
 
+        /// <summary>
+        /// Gets player's current equipment.
+        /// </summary>
         public Item CurrentEquip
         {
             get { return _currentEquipment; }
         }
 
+        /// <summary>
+        /// Gets player's job. Sets job to value.
+        /// </summary>
         public string Job
         {
             get
@@ -65,6 +81,9 @@ namespace Assessment1
             }
         }   
 
+        /// <summary>
+        /// Gets player's keys. Sets keys to value.
+        /// </summary>
         public int Keys
         {
             get { return _keys; }
@@ -72,6 +91,9 @@ namespace Assessment1
             set { _keys = value; }
         }
 
+        /// <summary>
+        /// Gets player's gold. Sets gold to value.
+        /// </summary>
         public int Gold
         {
             get { return _gold; }
@@ -79,6 +101,10 @@ namespace Assessment1
             set { _gold = value; }
         }
 
+        /// <summary>
+        /// Player constructor
+        /// </summary>
+        /// <param name="items">Array of player items</param>
         public Player(Item[] items) : base()
         {
             _currentEquipment.Name = "Nothing";
@@ -86,6 +112,17 @@ namespace Assessment1
             _currentEquipmentIndex = -1;         
         }
 
+        /// <summary>
+        /// Player constructor
+        /// </summary>
+        /// <param name="name">The player's name</param>
+        /// <param name="health">The player's health</param>
+        /// <param name="attackPower">The player's attack power</param>
+        /// <param name="defensePower">The player's defense power</param>
+        /// <param name="gold">The player's gold</param>
+        /// <param name="items">The player's array of items</param>
+        /// <param name="job">The player's job</param>
+        /// <param name="keys">The player's keys</param>
         public Player(string name, float health, float attackPower, float defensePower, int gold, Item[] items, string job, int keys) : base(name, health, attackPower, defensePower)
         {
             _equipment = items;
@@ -99,7 +136,7 @@ namespace Assessment1
         /// <summary>
         /// Equip the item at the selected index
         /// </summary>
-        /// <param name="index"></param>
+        /// <param name="index">The index of the equipment array</param>
         /// <returns></returns>
         public bool TryEquip(int index)
         {
@@ -123,20 +160,24 @@ namespace Assessment1
         {
             _gold -= item.Cost;
 
-            Item[] playerConsumables = new Item[_equipment.Length + 1];
-
-            for (int i = 0; i < _equipment.Length; i++)
-                playerConsumables[i] = _equipment[i];
-
-            playerConsumables[_equipment.Length] = item;
-
-            _equipment = playerConsumables;
+            if (item.Type == ItemType.HEALTH)
+            {
+                base.Health += item.StatBoost;
+            }
+            else if (item.Type == ItemType.ATTACK)
+            {
+                base.AttackPower += item.StatBoost;
+            }
+            else if (item.Type == ItemType.DEFENSE)
+            {
+                base.DefensePower += item.StatBoost;
+            }         
         }
 
         /// <summary>
         /// Gets the names of player's starting items
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Item names</returns>
         public string[] GetItemNames()
         {
             string[] itemNames = new string[_equipment.Length];
@@ -158,7 +199,7 @@ namespace Assessment1
             writer.WriteLine(_job);
             base.Save(writer);            
             writer.WriteLine(_gold);
-            writer.WriteLine(_keys);                  
+            writer.WriteLine(_keys);           
             writer.WriteLine(_currentEquipmentIndex);
         }
 
@@ -172,15 +213,13 @@ namespace Assessment1
             //If the base loading function fails...
             if (!base.Load(reader))
                 //...return false
-                return false;
-
-           
+                return false;         
 
             if (!int.TryParse(reader.ReadLine(), out _gold))
                 return false;
 
             if (!int.TryParse(reader.ReadLine(), out _keys))
-                return false;         
+                return false;        
 
             //If the current line can't be converted into an int...
             if (!int.TryParse(reader.ReadLine(), out _currentEquipmentIndex))

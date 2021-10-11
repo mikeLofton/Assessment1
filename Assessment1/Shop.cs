@@ -7,9 +7,14 @@ namespace Assessment1
 {
     class Shop
     {
+        //Shop Variables
         private int _gold;
         private Item[] _inventory;
 
+        /// <summary>
+        /// Shop inventory takes in an array of items.
+        /// </summary>
+        /// <param name="items"></param>
         public Shop (Item[] items)
         {
             _inventory = items;

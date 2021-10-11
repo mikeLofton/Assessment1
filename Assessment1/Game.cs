@@ -5,6 +5,9 @@ using System.IO;
 
 namespace Assessment1
 {
+    /// <summary>
+    /// Names of game scenes.
+    /// </summary>
     public enum Scene
     {
         STARTMENU,
@@ -16,6 +19,9 @@ namespace Assessment1
         RESTARTMENU
     }
 
+    /// <summary>
+    /// Item stat boost types.
+    /// </summary>
     public enum ItemType
     {
         DEFENSE,
@@ -24,6 +30,9 @@ namespace Assessment1
         NONE
     }
 
+    /// <summary>
+    /// Items used throughout game.
+    /// </summary>
     public struct Item
     {
         public string Name;
@@ -37,6 +46,7 @@ namespace Assessment1
         //Basic Variables
         private bool _gameOver;
         private Scene _currentScene = 0;
+        private bool _showEnemyDescription = false;
         //Player related Variables
         private Player _player;
         private string _playerName;
@@ -47,9 +57,9 @@ namespace Assessment1
         private Entity[] _enemies;
         private int _currentEnemyIndex = 0;
         private Entity _currentEnemy;
-        private Entity sinner;
-        private Entity wolves;
-        private Entity magma;
+        private Entity _sinner;
+        private Entity _wolves;
+        private Entity _magma;
         //Shop related Variables
         private Shop _shop;
         private Item[] _shopInventory;
@@ -101,11 +111,15 @@ namespace Assessment1
             Console.ReadKey(true);
         }
 
+        /// <summary>
+        /// Saves the player's curent game state.
+        /// </summary>
         private void Save()
         {
             //Create new stream writer
             StreamWriter writer = new StreamWriter("SaveData.txt");
 
+            //Save the current scene
             writer.WriteLine(_currentScene);
 
             //Save enemy index
@@ -115,6 +129,7 @@ namespace Assessment1
             _player.Save(writer);
             _currentEnemy.Save(writer);
 
+            //Closes stream writer
             writer.Close();
         }
 
@@ -137,8 +152,6 @@ namespace Assessment1
             if (!int.TryParse(reader.ReadLine(), out _currentEnemyIndex))
                 //...returns false
                 loadSuccessful = false;
-
-        
 
             string job = reader.ReadLine();
 
@@ -247,7 +260,7 @@ namespace Assessment1
                     break;
 
                 case Scene.THIRDEVENT:
-                    //ThirdEvent();
+                    //ThirdEvent();                   
                     Battle();
                     CheckBattleResults();
                     Console.ReadKey(true);
@@ -397,7 +410,7 @@ namespace Assessment1
         {
             _healthPotion = new Item { Name = "Health Potion", StatBoost = 30, Type = ItemType.HEALTH, Cost = 100 };
             _attackPotion = new Item { Name = "Attack Potion", StatBoost = 30, Type = ItemType.ATTACK, Cost = 150 };
-            _defensePotion = new Item { Name = "Defense Potion", StatBoost = 30, Type = ItemType.DEFENSE, Cost = 200 };
+            _defensePotion = new Item { Name = "Defense Potion", StatBoost = 30, Type = ItemType.DEFENSE, Cost = 300 };
 
             _shopInventory = new Item[] { _healthPotion, _attackPotion, _defensePotion };
         }
@@ -409,13 +422,13 @@ namespace Assessment1
         {
             _currentEnemyIndex = 0;
 
-            sinner = new Entity("The Nameless Sinner", 20, 10, 3);
+            _sinner = new Entity("The Nameless Sinner", 25, 10, 5);
 
-            wolves = new Entity("The Nest of Wolves", 30, 15, 5);
+            _wolves = new Entity("The Nest of Wolves", 50, 20, 10);
 
-            magma = new Entity("The Dripping Dinosaurus", 45, 20, 10);
+            _magma = new Entity("The Dripping Dinosaurus", 75, 25, 15);
 
-            _enemies = new Entity[] { sinner, wolves, magma };
+            _enemies = new Entity[] { _sinner, _wolves, _magma };
 
             _currentEnemy = _enemies[_currentEnemyIndex];
         }
@@ -434,10 +447,16 @@ namespace Assessment1
         }
 
         /// <summary>
-        /// Has the player and enemy fight
+        /// Displays the battle btween player and enemy and all the player's options.
         /// </summary>
         private void Battle()
         {
+            if (!_showEnemyDescription)
+            {
+                EnemyDescriptions();
+                _showEnemyDescription = true;
+            }
+
             DisplayStats(_player);
             Console.WriteLine($"Shop Keys: {_player.Keys}");
             Console.WriteLine("--------------------------");
@@ -502,6 +521,7 @@ namespace Assessment1
                 Console.WriteLine($"You gain 100 gold. Total Gold: {_player.Gold}");
 
                 _currentEnemyIndex++;
+                _showEnemyDescription = false;
 
                 if (TryEndGame())
                 {
@@ -516,7 +536,7 @@ namespace Assessment1
         /// Ends the battle if all enemies in array have died.
         /// </summary>
         /// <returns></returns>
-        bool TryEndGame()
+        private bool TryEndGame()
         {
             bool endGame = _currentEnemyIndex >= _enemies.Length;
 
@@ -559,7 +579,7 @@ namespace Assessment1
         /// Second event of the game
         /// </summary>
         private void SecondEvent()
-        {
+        {        
             Console.WriteLine("Floor 1 \n");
 
             Console.WriteLine("Upon entering the door slams shut behind you. Three hallways stand before you" +
@@ -578,6 +598,12 @@ namespace Assessment1
                         "You take 30 damage");
                     _player.Health -= 30;
                     Console.ReadKey(true);
+
+                    if (_player.Health <= 0)
+                    {
+                        _currentScene = Scene.RESTARTMENU;
+                        break;
+                    }
                 }
                 else if (input == 1)
                 {
@@ -592,6 +618,12 @@ namespace Assessment1
                        "You take 30 damage");
                     _player.Health -= 30;
                     Console.ReadKey(true);
+
+                    if (_player.Health <= 0)
+                    {
+                        _currentScene = Scene.RESTARTMENU;
+                        break;
+                    }
                 }
             }
         }
@@ -623,12 +655,7 @@ namespace Assessment1
             string[] playerItemNames = _player.GetItemNames();
 
             Console.WriteLine("Your gold: " + _player.Gold);
-            Console.WriteLine("Your Inventory: " + "\n");
-
-            foreach (string itemName in playerItemNames)
-            {
-                Console.WriteLine(itemName);
-            }
+                  
             Console.WriteLine();
 
             int input = GetInput("Please help yourself to my wares", GetShopMenuOptions());
@@ -639,6 +666,7 @@ namespace Assessment1
                 {
                     Console.Clear();
                     Console.WriteLine($"You purchased the {_shop.GetItemNames()[input]}!");
+                    Console.WriteLine($"You've become stronger!");
                     Console.ReadKey();
                     Console.Clear();
                 }
@@ -649,6 +677,30 @@ namespace Assessment1
                     Console.ReadKey(true);
                     Console.Clear();
                 }
+            }
+        }
+
+        private void EnemyDescriptions()
+        {
+            if (_currentEnemyIndex == 0)
+            {
+                Console.WriteLine("At the end of the hall you come across an emaciated man, clad in only a loincloth, weilding a broken blade. He lunges at you! Prepare for battle!");
+                Console.ReadKey(true);
+                Console.Clear();
+            }
+            else if (_currentEnemyIndex == 1)
+            {
+                Console.WriteLine("The sinner's body fades to ash. The ash begins to swirl into a new beastly form. A wolf-like creature, with dozens of heads, tails, and claws, wildly attacks as if" +
+                    " its many brains can't choose where to strike first. Prepare yourself!");
+                Console.ReadKey(true);
+                Console.Clear();
+            }
+            else if (_currentEnemyIndex == 2)
+            {
+                Console.WriteLine("The ashen remains of the wolves seep into the ground's cracks. The floor below burst open! Rising from the depths is a dinosaur covered in lava and molten" +
+                    " rock. Its roars causes your very bones to rattle. Prepare yourself!");
+                Console.ReadKey(true);
+                Console.Clear();
             }
         }
     }
