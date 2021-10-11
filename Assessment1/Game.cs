@@ -680,6 +680,9 @@ namespace Assessment1
             }
         }
 
+        /// <summary>
+        /// The descriptions for each enemy appearance.
+        /// </summary>
         private void EnemyDescriptions()
         {
             if (_currentEnemyIndex == 0)
